@@ -77,7 +77,8 @@ public class DragAndDrop : MonoBehaviour
                 hit.collider.gameObject.tag == "Bean" ||
                 hit.collider.gameObject.tag == "Sugar" ||
                 hit.collider.gameObject.tag == "Milk" ||
-                hit.collider.gameObject.tag == "Topping")
+                hit.collider.gameObject.tag == "Topping" ||
+                hit.collider.gameObject.tag == "Coffee")
             {
                 target = hit.collider.gameObject;
             }
@@ -96,7 +97,8 @@ public class DragAndDrop : MonoBehaviour
                 hit.collider.gameObject.tag == "Bean" ||
                 hit.collider.gameObject.tag == "Sugar" ||
                 hit.collider.gameObject.tag == "Milk" ||
-                hit.collider.gameObject.tag == "Topping")
+                hit.collider.gameObject.tag == "Topping" ||
+                hit.collider.gameObject.tag == "Coffee")
             {
                 target = hit.collider.gameObject;
             }

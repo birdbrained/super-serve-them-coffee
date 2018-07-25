@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    Dictionary<BeanType, bool> unlockedBeans = new Dictionary<BeanType, bool>()
+    public static Dictionary<BeanType, bool> unlockedBeans = new Dictionary<BeanType, bool>()
     {
         { BeanType.BT_BASIC, true },
         { BeanType.BT_KILIMANJARO, false },
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
         { BeanType.BT_HOT_COCOA, false }
     };
 
-    Dictionary<MilkType, bool> unlockedMilk = new Dictionary<MilkType, bool>()
+    public static Dictionary<MilkType, bool> unlockedMilk = new Dictionary<MilkType, bool>()
     {
         { MilkType.Milk_NONE, true },
         { MilkType.Milk_SKIM, true },
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
         { MilkType.Milk_CREAM, false }
     };
 
-    Dictionary<FlavorShot, bool> unlockedFlavors = new Dictionary<FlavorShot, bool>()
+    public static Dictionary<FlavorShot, bool> unlockedFlavors = new Dictionary<FlavorShot, bool>()
     {
         { FlavorShot.Flavor_NONE, true },
         { FlavorShot.Flavor_VANILLA, false },
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
         { FlavorShot.Flavor_PUMPKIN_SPICE, false }
     };
 
-    Dictionary<ToppingType, bool> unlockedToppings = new Dictionary<ToppingType, bool>()
+    public static Dictionary<ToppingType, bool> unlockedToppings = new Dictionary<ToppingType, bool>()
     {
         { ToppingType.Topping_NONE, true },
         { ToppingType.Topping_WHIPPED_CREAM, false },
@@ -55,7 +56,20 @@ public class GameManager : MonoBehaviour
         { ToppingType.Topping_MARSHMALLOW, false }
     };
 
+    Dictionary<BeanType, float> beanPrice = new Dictionary<BeanType, float>()
+    {
+        { BeanType.BT_BASIC, 2.0f },
+        { BeanType.BT_KILIMANJARO, 2.35f },
+        { BeanType.BT_BLUE_MOUNTAIN, 2.5f },
+        { BeanType.BT_MOCHA, 2.45f },
+        { BeanType.BT_HOUSE_BLEND, 3.0f },
+        { BeanType.BT_HOT_COCOA, 2.0f }
+    };
+
     private string filename = "/saveBeans.dat";
+    public static float currentMoney = 50.0f;
+    [SerializeField]
+    private Text moneyText;
 
     private void OnEnable()
     {
@@ -90,7 +104,10 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-		
+		if (moneyText != null)
+        {
+            moneyText.text = "$" + currentMoney.ToString("#.##");
+        }
 	}
 
     public void Save()
@@ -112,6 +129,17 @@ public class GameManager : MonoBehaviour
             unlockedBeans = (Dictionary<BeanType, bool>)bf.Deserialize(file);
             file.Close();
         }
+    }
+
+    public float GetCurrentMoney()
+    {
+        return currentMoney;
+    }
+
+    public void AlterCurrentMoney(float f)
+    {
+        string formatted = f.ToString("#.##");
+        currentMoney += f;
     }
 
     /**
@@ -174,6 +202,16 @@ public class GameManager : MonoBehaviour
         numMistakes += CompareToppingList(coffee.toppings, order.toppings);
 
         return numMistakes;
+    }
+
+    public float DetermineCoffeeAmount(Coffee c, float totalMulitpler = 1.0f, float beanMultiplier = 1.0f)
+    {
+        //float price = 0.0f;
+
+        //price = beanPrice[c.beanType] * beanMultiplier;
+        //price *= totalMulitpler;
+
+        return beanPrice[c.beanType] * beanMultiplier * totalMulitpler;
     }
 
     /**

@@ -16,11 +16,11 @@ public enum ItemType
 public class Item : MonoBehaviour
 {
     [SerializeField]
+    private ItemType itemType;
+    [SerializeField]
     private BeanType beanType;
     [SerializeField]
     private MilkType milkType;
-    [SerializeField]
-    private bool isSugar;
     [SerializeField]
     private FlavorShot flavorShot;
     [SerializeField]
