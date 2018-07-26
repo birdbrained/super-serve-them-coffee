@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: b1940144e84d63b43ac2314d58aa03f0
+timeCreated: 1532535846
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: GetCoffee regular
+  fontNames:
+  - GetCoffee regular
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

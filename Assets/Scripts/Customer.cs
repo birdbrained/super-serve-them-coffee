@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
+    private SpriteRenderer sr;
+
+    public bool inUse = false;
     [SerializeField]
     private int numToppingsToOrder = 0;
     Coffee order;
@@ -21,18 +24,32 @@ public class Customer : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        sr = GetComponent<SpriteRenderer>();
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+		if (inUse)
+        {
+            sr.color = Color.red;
+        }
+        else
+        {
+            sr.color = Color.white;
+        }
+	}
+
+    public void StartOrder()
+    {
         order = GameManager.Instance.GenerateOrder(numToppingsToOrder);
         orderBeans = order.beanType;
         orderMilk = order.milkType;
         orderSugar = order.sugarAmount;
         orderFlavor = order.flavor;
         orderToppings = order.toppings;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        inUse = true;
+    }
 
     public void DetermineOrderCorrectness(Coffee c)
     {
@@ -55,11 +72,15 @@ public class Customer : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Coffee")
+        if (inUse)
         {
-            Coffee c = other.gameObject.GetComponent<Coffee>();
-            DetermineOrderCorrectness(c);
-            Destroy(other.gameObject);
+            if (other.gameObject.tag == "Coffee")
+            {
+                Coffee c = other.gameObject.GetComponent<Coffee>();
+                DetermineOrderCorrectness(c);
+                Destroy(other.gameObject);
+                inUse = false;
+            }
         }
     }
 }
