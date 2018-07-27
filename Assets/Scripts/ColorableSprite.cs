@@ -32,6 +32,9 @@ public class ColorableSprite : MonoBehaviour
     public void UpdateColor()
     {
         myColor = PaletteManager.Instance.CurrentPalette[paletteIndex];
-        sr.color = myColor;
+        if (sr != null)
+        {
+            sr.color = myColor;
+        }
     }
 }

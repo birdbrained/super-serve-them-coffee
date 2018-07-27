@@ -64,6 +64,10 @@ public class Coffee : MonoBehaviour
     public void IncreaseSugar()
     {
         sugarAmount++;
+        if (sugarAmount > 3)
+        {
+            sugarAmount = 3;
+        }
     }
 
     public void SetSugarAmount(int amount)
@@ -79,5 +83,49 @@ public class Coffee : MonoBehaviour
     public void AddTopping(ToppingType topping)
     {
         toppings.Add(topping);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        Item item = other.gameObject.GetComponent<Item>();
+        if (item != null)
+        {
+            if (other.collider.tag == "Sugar")
+            {
+                if (item.GetItemType() == ItemType.Item_SUGAR)
+                {
+                    IncreaseSugar();
+                    Destroy(other.gameObject);
+                }
+            }
+            else if (other.collider.tag == "Milk")
+            {
+                if (item.GetItemType() == ItemType.Item_MILK)
+                {
+                    SetMilkType(item.GetMilkType());
+                    Destroy(other.gameObject);
+                }
+            }
+            else if (other.collider.tag == "Flavor")
+            {
+                if (item.GetItemType() == ItemType.Item_FLAVOR_SHOT)
+                {
+                    SetFlavorShot(item.GetFlavorShot());
+                    Destroy(other.gameObject);
+                }
+            }
+            else if (other.collider.tag == "Topping")
+            {
+                if (item.GetItemType() == ItemType.Item_TOPPING)
+                {
+                    ToppingType tt = item.GetToppingType();
+                    if (!toppings.Contains(tt))
+                    {
+                        toppings.Add(tt);
+                    }
+                    Destroy(other.gameObject);
+                }
+            }
+        }
     }
 }

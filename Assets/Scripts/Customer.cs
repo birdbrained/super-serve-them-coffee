@@ -8,6 +8,8 @@ public class Customer : MonoBehaviour
 
     public bool inUse = false;
     [SerializeField]
+    private GameObject customerObject;
+    [SerializeField]
     private int numToppingsToOrder = 0;
     Coffee order;
     [SerializeField]
@@ -25,19 +27,20 @@ public class Customer : MonoBehaviour
 	void Start ()
     {
         sr = GetComponent<SpriteRenderer>();
+        customerObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		if (inUse)
+		/*if (inUse)
         {
             sr.color = Color.red;
         }
         else
         {
             sr.color = Color.white;
-        }
+        }*/
 	}
 
     public void StartOrder()
@@ -49,6 +52,7 @@ public class Customer : MonoBehaviour
         orderFlavor = order.flavor;
         orderToppings = order.toppings;
         inUse = true;
+        customerObject.SetActive(true);
     }
 
     public void DetermineOrderCorrectness(Coffee c)
@@ -80,6 +84,7 @@ public class Customer : MonoBehaviour
                 DetermineOrderCorrectness(c);
                 Destroy(other.gameObject);
                 inUse = false;
+                customerObject.SetActive(false);
             }
         }
     }

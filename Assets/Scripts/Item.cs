@@ -36,6 +36,11 @@ public class Item : MonoBehaviour
 		
 	}
 
+    public ItemType GetItemType()
+    {
+        return itemType;
+    }
+
     public BeanType GetBeanType()
     {
         return beanType;

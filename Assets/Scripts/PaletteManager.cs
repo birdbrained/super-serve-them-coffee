@@ -17,6 +17,7 @@ public class PaletteManager : MonoBehaviour
         }
     }
 
+    private int currentPaletteIndex = 0;
     private Color[] currentPalette = new Color[4];
     public Color[] CurrentPalette
     {
@@ -34,7 +35,7 @@ public class PaletteManager : MonoBehaviour
      * 3: Lightest color, used for brightest highlights
      */
 
-    Color[] paletteMild = new Color[]
+    /*Color[] paletteMild = new Color[]
     {
         new Color(47.0f/255.0f, 14.0f/255.0f, 0.0f, 1.0f),
         new Color(71.0f/255.0f, 44.0f/255.0f, 33.0f/255.0f, 1.0f),
@@ -48,12 +49,48 @@ public class PaletteManager : MonoBehaviour
         new Color(54.0f/255.0f, 30.0f/255.0f, 20.0f/255.0f, 1.0f),
         new Color(71.0f/255.0f, 45.0f/255.0f, 34.0f/255.0f, 1.0f),
         new Color(98.0f/255.0f, 68.0f/255.0f, 55.0f/255.0f, 1.0f)
+    };*/
+
+    Color[][] palettes = new Color[4][]
+    {
+        new Color[4]
+        {
+            new Color(47.0f/255.0f, 14.0f/255.0f, 0.0f, 1.0f),
+            new Color(71.0f/255.0f, 44.0f/255.0f, 33.0f/255.0f, 1.0f),
+            new Color(141.0f/255.0f, 75.0f/255.0f, 47.0f/255.0f, 1.0f),
+            new Color(180.0f/255.0f, 106.0f/255.0f, 74.0f/255.0f, 1.0f)
+        },
+        new Color[4]
+        {
+            new Color(34.0f/255.0f, 12.0f/255.0f, 3.0f/255.0f, 1.0f),
+            new Color(54.0f/255.0f, 30.0f/255.0f, 20.0f/255.0f, 1.0f),
+            new Color(71.0f/255.0f, 45.0f/255.0f, 34.0f/255.0f, 1.0f),
+            new Color(98.0f/255.0f, 68.0f/255.0f, 55.0f/255.0f, 1.0f)
+        },
+        new Color[4]
+        {
+            new Color(173.0f/255.0f, 96.0f/255.0f, 63.0f/255.0f, 1.0f),
+            new Color(193.0f/255.0f, 125.0f/255.0f, 97.0f/255.0f, 1.0f),
+            new Color(229.0f/255.0f, 180.0f/255.0f, 160.0f/255.0f, 1.0f),
+            new Color(186.0f/255.0f, 145.0f/255.0f, 128.0f/255.0f, 1.0f)
+        },
+        new Color[4]
+        {
+            new Color(5.0f/255.0f, 0.0f, 60.0f/255.0f, 1.0f),
+            new Color(0.0f, 12.0f/255.0f, 139.0f/255.0f, 1.0f),
+            new Color(65.0f/255.0f, 87.0f/255.0f, 191.0f/255.0f, 1.0f),
+            new Color(122.0f/255.0f, 143.0f/255.0f, 1.0f, 1.0f)
+        }
     };
 
     // Use this for initialization
     void Start ()
     {
-        currentPalette = paletteMild;
+        //currentPalette = paletteMild;
+        for (int j = 0; j < palettes[currentPaletteIndex].Length; j++)
+        {
+            currentPalette[j] = palettes[currentPaletteIndex][j];
+        }
         UpdateSpriteColors();
 	}
 	
@@ -84,9 +121,9 @@ public class PaletteManager : MonoBehaviour
         }
     }
 
-    public void ChangePalette(int paletteIndex)
+    public void ChangePalette(int incrementOrDecrement)
     {
-        switch (paletteIndex)
+        /*switch (paletteIndex)
         {
             case 1:     //Bold palette
                 currentPalette = paletteBold;
@@ -94,8 +131,28 @@ public class PaletteManager : MonoBehaviour
             default:    //default to Mild palette, also has paletteIndex of 0
                 currentPalette = paletteMild;
                 break;
+        }*/
+        if (incrementOrDecrement >= 0)
+        {
+            currentPaletteIndex++;
+            if (currentPaletteIndex >= currentPalette.Length)
+            {
+                currentPaletteIndex = currentPalette.Length - 1;
+            }
+        }
+        else
+        {
+            currentPaletteIndex--;
+            if (currentPaletteIndex < 0)
+            {
+                currentPaletteIndex = 0;
+            }
         }
 
+        for (int j = 0; j < palettes[currentPaletteIndex].Length; j++)
+        {
+            currentPalette[j] = palettes[currentPaletteIndex][j];
+        }
         UpdateSpriteColors();
     }
 }

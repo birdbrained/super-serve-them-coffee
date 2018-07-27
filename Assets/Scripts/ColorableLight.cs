@@ -31,6 +31,9 @@ public class ColorableLight : MonoBehaviour
     public void UpdateColor()
     {
         myColor = PaletteManager.Instance.CurrentPalette[paletteIndex];
-        light.color = myColor;
+        if (light != null)
+        {
+            light.color = myColor;
+        }
     }
 }

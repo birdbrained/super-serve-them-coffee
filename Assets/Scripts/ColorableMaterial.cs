@@ -35,6 +35,9 @@ public class ColorableMaterial : MonoBehaviour
     public void UpdateColor()
     {
         myColor = PaletteManager.Instance.CurrentPalette[paletteIndex];
-        copyMaterial.color = myColor;
+        if (copyMaterial != null)
+        {
+            copyMaterial.color = myColor;
+        }
     }
 }
