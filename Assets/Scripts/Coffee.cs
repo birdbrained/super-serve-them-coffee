@@ -37,7 +37,7 @@ public enum ToppingType
     Topping_NONE,
     Topping_WHIPPED_CREAM,
     Topping_SPRINKLES,
-    Topping_COCOA_POWDER,
+    //Topping_COCOA_POWDER,
     Topping_CINNAMON,
     Topping_MARSHMALLOW,
     Topping_UNKNOWN

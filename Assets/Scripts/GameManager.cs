@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         //{ ToppingType.Topping_NONE, true },
         { ToppingType.Topping_WHIPPED_CREAM, true },
         { ToppingType.Topping_SPRINKLES, true },
-        { ToppingType.Topping_COCOA_POWDER, false },
+        //{ ToppingType.Topping_COCOA_POWDER, false },
         { ToppingType.Topping_CINNAMON, false },
         { ToppingType.Topping_MARSHMALLOW, false }
     };
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     public void AlterCurrentMoney(float f)
     {
-        string formatted = f.ToString("#.##");
+        //string formatted = f.ToString("#.##");
         currentMoney += f;
     }
 
@@ -344,9 +344,9 @@ public class GameManager : MonoBehaviour
             case ToppingType.Topping_CINNAMON:
                 s = "cinnamon";
                 break;
-            case ToppingType.Topping_COCOA_POWDER:
-                s = "cocoa powder";
-                break;
+            //case ToppingType.Topping_COCOA_POWDER:
+                //s = "cocoa powder";
+                //break;
             case ToppingType.Topping_MARSHMALLOW:
                 s = "marshmallow";
                 break;
