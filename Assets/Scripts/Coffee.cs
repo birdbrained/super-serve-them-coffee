@@ -85,6 +85,14 @@ public class Coffee : MonoBehaviour
         toppings.Add(topping);
     }
 
+    private void FixedUpdate()
+    {
+        if (transform.position.y < -20.0f)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         Item item = other.gameObject.GetComponent<Item>();

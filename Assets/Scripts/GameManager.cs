@@ -70,6 +70,15 @@ public class GameManager : MonoBehaviour
     public static float currentMoney = 50.0f;
     [SerializeField]
     private Text moneyText;
+    [SerializeField]
+    private GameObject[] reactionParticles = new GameObject[3];
+    public GameObject[] ReactionParticles
+    {
+        get
+        {
+            return reactionParticles;
+        }
+    }
 
     private void OnEnable()
     {

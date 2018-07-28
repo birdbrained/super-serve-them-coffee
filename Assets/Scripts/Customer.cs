@@ -40,6 +40,8 @@ public class Customer : MonoBehaviour
     private string orderQuip = "";
     [SerializeField]
     private Text orderQuipText;
+    [SerializeField]
+    private GameObject particleSpawnPoint;
 
 	// Use this for initialization
 	void Start ()
@@ -213,9 +215,14 @@ public class Customer : MonoBehaviour
                 money = GameManager.Instance.DetermineCoffeeAmount(c, 0.75f);
                 break;
             default:
-                money = GameManager.Instance.DetermineCoffeeAmount(c, 0.25f);
+                money = GameManager.Instance.DetermineCoffeeAmount(c, 0.0f);
                 break;
         }
+        if (mistakes > 2)
+        {
+            mistakes = 2;
+        }
+        Instantiate(GameManager.Instance.ReactionParticles[mistakes], particleSpawnPoint.transform.position, transform.rotation);
         GameManager.Instance.AlterCurrentMoney(money);
     }
 

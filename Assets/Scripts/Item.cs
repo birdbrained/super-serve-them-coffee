@@ -32,8 +32,12 @@ public class Item : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void FixedUpdate ()
+    {
+		if (transform.position.y < -20.0f)
+        {
+            Destroy(gameObject);
+        }
 	}
 
     public ItemType GetItemType()
