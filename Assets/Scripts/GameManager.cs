@@ -48,9 +48,9 @@ public class GameManager : MonoBehaviour
 
     public static Dictionary<ToppingType, bool> unlockedToppings = new Dictionary<ToppingType, bool>()
     {
-        { ToppingType.Topping_NONE, true },
-        { ToppingType.Topping_WHIPPED_CREAM, false },
-        { ToppingType.Topping_SPRINKLES, false },
+        //{ ToppingType.Topping_NONE, true },
+        { ToppingType.Topping_WHIPPED_CREAM, true },
+        { ToppingType.Topping_SPRINKLES, true },
         { ToppingType.Topping_COCOA_POWDER, false },
         { ToppingType.Topping_CINNAMON, false },
         { ToppingType.Topping_MARSHMALLOW, false }
@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
      * @param numToppings (Optional) The number of toppings to decide on, max is 2, default is 0
      * @returns A Coffee object that holds the required information concerning the order
      */
-    public Coffee GenerateOrder(int numToppings = 0)
+    public Coffee GenerateOrder(int numToppings)
     {
         Coffee order = new Coffee();
         int index = 0;
@@ -333,5 +333,37 @@ public class GameManager : MonoBehaviour
         order.SetSugarAmount(Random.Range(0, 3));
 
         return order;
+    }
+
+    public string ToppingTypeToString(ToppingType tt)
+    {
+        string s = "";
+
+        switch (tt)
+        {
+            case ToppingType.Topping_CINNAMON:
+                s = "cinnamon";
+                break;
+            case ToppingType.Topping_COCOA_POWDER:
+                s = "cocoa powder";
+                break;
+            case ToppingType.Topping_MARSHMALLOW:
+                s = "marshmallow";
+                break;
+            case ToppingType.Topping_SPRINKLES:
+                s = "sprinkles";
+                break;
+            case ToppingType.Topping_WHIPPED_CREAM:
+                s = "whipped cream";
+                break;
+            case ToppingType.Topping_NONE:
+                s = "no topping";
+                break;
+            default:
+                s = "unknown";
+                break;
+        }
+
+        return s;
     }
 }

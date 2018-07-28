@@ -22,8 +22,13 @@ public class ColorableSprite : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         UpdateColor();
     }
-	
-	// Update is called once per frame
+
+    private void OnEnable()
+    {
+        UpdateColor();
+    }
+
+    // Update is called once per frame
     void Update ()
     {
         

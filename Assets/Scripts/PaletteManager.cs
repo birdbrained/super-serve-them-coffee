@@ -69,7 +69,7 @@ public class PaletteManager : MonoBehaviour
         },
         new Color[4]
         {
-            new Color(173.0f/255.0f, 96.0f/255.0f, 63.0f/255.0f, 1.0f),
+            new Color(153.0f/255.0f, 66.0f/255.0f, 36.0f/255.0f, 1.0f),
             new Color(193.0f/255.0f, 125.0f/255.0f, 97.0f/255.0f, 1.0f),
             new Color(229.0f/255.0f, 180.0f/255.0f, 160.0f/255.0f, 1.0f),
             new Color(186.0f/255.0f, 145.0f/255.0f, 128.0f/255.0f, 1.0f)
