@@ -50,6 +50,7 @@ public class Coffee : MonoBehaviour
     public int sugarAmount;
     public FlavorShot flavor;
     public List<ToppingType> toppings = new List<ToppingType>();
+    private AudioSource audio;
 
     public void SetBeanType(BeanType bean)
     {
@@ -85,6 +86,11 @@ public class Coffee : MonoBehaviour
         toppings.Add(topping);
     }
 
+    void Start()
+    {
+        audio = GetComponent<AudioSource>();
+    }
+
     private void FixedUpdate()
     {
         if (transform.position.y < -20.0f)
@@ -104,6 +110,7 @@ public class Coffee : MonoBehaviour
                 {
                     IncreaseSugar();
                     Destroy(other.gameObject);
+                    audio.Play();
                 }
             }
             else if (other.collider.tag == "Milk")
@@ -112,6 +119,7 @@ public class Coffee : MonoBehaviour
                 {
                     SetMilkType(item.GetMilkType());
                     Destroy(other.gameObject);
+                    audio.Play();
                 }
             }
             else if (other.collider.tag == "Flavor")
@@ -120,6 +128,7 @@ public class Coffee : MonoBehaviour
                 {
                     SetFlavorShot(item.GetFlavorShot());
                     Destroy(other.gameObject);
+                    audio.Play();
                 }
             }
             else if (other.collider.tag == "Topping")
@@ -132,6 +141,7 @@ public class Coffee : MonoBehaviour
                         toppings.Add(tt);
                     }
                     Destroy(other.gameObject);
+                    audio.Play();
                 }
             }
         }

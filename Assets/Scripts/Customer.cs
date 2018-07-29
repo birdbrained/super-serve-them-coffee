@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
-    private SpriteRenderer sr;
+    //private SpriteRenderer sr;
 
     public bool inUse = false;
     [SerializeField]
@@ -46,7 +46,7 @@ public class Customer : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        sr = GetComponent<SpriteRenderer>();
+        //sr = GetComponent<SpriteRenderer>();
         customerObject.SetActive(false);
 	}
 	

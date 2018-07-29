@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
     public static Dictionary<ToppingType, bool> unlockedToppings = new Dictionary<ToppingType, bool>()
     {
         //{ ToppingType.Topping_NONE, true },
-        { ToppingType.Topping_WHIPPED_CREAM, true },
-        { ToppingType.Topping_SPRINKLES, true },
+        { ToppingType.Topping_WHIPPED_CREAM, false },
+        { ToppingType.Topping_SPRINKLES, false },
         //{ ToppingType.Topping_COCOA_POWDER, false },
         { ToppingType.Topping_CINNAMON, false },
         { ToppingType.Topping_MARSHMALLOW, false }
@@ -61,15 +61,27 @@ public class GameManager : MonoBehaviour
         { BeanType.BT_BASIC, 2.0f },
         { BeanType.BT_KILIMANJARO, 2.35f },
         { BeanType.BT_BLUE_MOUNTAIN, 2.5f },
-        { BeanType.BT_MOCHA, 2.45f },
-        { BeanType.BT_HOUSE_BLEND, 3.0f },
-        { BeanType.BT_HOT_COCOA, 2.0f }
+        { BeanType.BT_MOCHA, 2.75f },
+        { BeanType.BT_HOUSE_BLEND, 5.50f },
+        { BeanType.BT_HOT_COCOA, 3.0f }
     };
+
+    [SerializeField]
+    private GameObject[] beanObjects;
+    [SerializeField]
+    private GameObject[] milkObjects;
+    [SerializeField]
+    private GameObject[] flavorObjects;
+    [SerializeField]
+    private GameObject[] toppingObjects;
 
     private string filename = "/saveBeans.dat";
     public static float currentMoney = 50.0f;
     [SerializeField]
     private Text moneyText;
+    private float moneyEarned = 0.0f;
+    [SerializeField]
+    private Text moneyEarnedText;
     [SerializeField]
     private GameObject[] reactionParticles = new GameObject[3];
     public GameObject[] ReactionParticles
@@ -79,6 +91,10 @@ public class GameManager : MonoBehaviour
             return reactionParticles;
         }
     }
+    [SerializeField]
+    private Text shopNameText;
+    [SerializeField]
+    private Text justUnlockedText;
 
     private void OnEnable()
     {
@@ -108,6 +124,11 @@ public class GameManager : MonoBehaviour
         two.Add(ToppingType.Topping_MARSHMALLOW);
         two.Add(ToppingType.Topping_COCOA_POWDER);
         Debug.Log(CompareToppingList(one, two));*/
+        EnableAndDisableUnlockedItems();
+        if (shopNameText != null && PlayerInfo.Instance != null)
+        {
+            shopNameText.text = "@" + PlayerInfo.Instance.shopName;
+        }
 	}
 	
 	// Update is called once per frame
@@ -117,6 +138,14 @@ public class GameManager : MonoBehaviour
         {
             moneyText.text = "$" + currentMoney.ToString("#.##");
         }
+        if (moneyEarnedText != null)
+        {
+            moneyEarnedText.text = "Earned: $" + moneyEarned.ToString(".##");
+        }
+        //if (justUnlockedText != null)
+        //{
+            //justUnlockedText.text = "";
+        //}
 	}
 
     public void Save()
@@ -149,6 +178,12 @@ public class GameManager : MonoBehaviour
     {
         //string formatted = f.ToString("#.##");
         currentMoney += f;
+        moneyEarned += f;
+    }
+
+    public void ResetMoneyEarned()
+    {
+        moneyEarned = 0.0f;
     }
 
     /**
@@ -237,6 +272,7 @@ public class GameManager : MonoBehaviour
                 if (unlockedBeans.ContainsKey(beanType))
                 {
                     unlockedBeans[beanType] = true;
+                    justUnlockedText.text = "Unlocked: " + BeanTypeToString(beanType);
                 }
                 break;
             case ItemType.Item_MILK:
@@ -244,6 +280,7 @@ public class GameManager : MonoBehaviour
                 if (unlockedMilk.ContainsKey(milkType))
                 {
                     unlockedMilk[milkType] = true;
+                    justUnlockedText.text = "Unlocked: " + MilkTypeToString(milkType);
                 }
                 break;
             case ItemType.Item_FLAVOR_SHOT:
@@ -251,6 +288,7 @@ public class GameManager : MonoBehaviour
                 if (unlockedFlavors.ContainsKey(f))
                 {
                     unlockedFlavors[f] = true;
+                    justUnlockedText.text = "Unlocked: " + FlavorTypeToString(f);
                 }
                 break;
             case ItemType.Item_TOPPING:
@@ -258,10 +296,79 @@ public class GameManager : MonoBehaviour
                 if (unlockedToppings.ContainsKey(t))
                 {
                     unlockedToppings[t] = true;
+                    justUnlockedText.text = "Unlocked: " + ToppingTypeToString(t);
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    public void UnlockNextBean(float price)
+    {
+        if (currentMoney >= price)
+        {
+            foreach (BeanType bt in unlockedBeans.Keys)
+            {
+                if (unlockedBeans[bt])
+                {
+                    continue;
+                }
+                else
+                {
+                    UnlockItem(ItemType.Item_BEAN, (int)bt);
+                    currentMoney -= price;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void UnlockNextMilk(float price)
+    {
+        if (currentMoney >= price)
+        {
+            foreach (MilkType mt in unlockedMilk.Keys)
+            {
+                if (!unlockedMilk[mt])
+                {
+                    UnlockItem(ItemType.Item_MILK, (int)mt);
+                    currentMoney -= price;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void UnlockNextFlavor(float price)
+    {
+        if (currentMoney >= price)
+        {
+            foreach (FlavorShot fs in unlockedFlavors.Keys)
+            {
+                if (!unlockedFlavors[fs])
+                {
+                    UnlockItem(ItemType.Item_FLAVOR_SHOT, (int)fs);
+                    currentMoney -= price;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void UnlockNextTopping(float price)
+    {
+        if (currentMoney >= price)
+        {
+            foreach (ToppingType tt in unlockedToppings.Keys)
+            {
+                if (!unlockedToppings[tt])
+                {
+                    UnlockItem(ItemType.Item_TOPPING, (int)tt);
+                    currentMoney -= price;
+                    break;
+                }
+            }
         }
     }
 
@@ -344,6 +451,57 @@ public class GameManager : MonoBehaviour
         return order;
     }
 
+    public string BeanTypeToString(BeanType bt)
+    {
+        switch (bt)
+        {
+            case BeanType.BT_BASIC:
+                return "Basic Blend (B)";
+            case BeanType.BT_BLUE_MOUNTAIN:
+                return "Blue Mountain (Triangle Shape)";
+            case BeanType.BT_HOT_COCOA:
+                return "Hot Cocoa (Chocolate Bar)";
+            case BeanType.BT_HOUSE_BLEND:
+                return "House Blend (Sparkles)";
+            case BeanType.BT_KILIMANJARO:
+                return "Kilimanjaro (K)";
+            case BeanType.BT_MOCHA:
+                return "Mocha (M)";
+            default:
+                return "idk";
+        }
+    }
+
+    public string MilkTypeToString(MilkType mt)
+    {
+        switch (mt)
+        {
+            case MilkType.Milk_CREAM:
+                return "Cream (C)";
+            case MilkType.Milk_SKIM:
+                return "Skim (S)";
+            case MilkType.Milk_WHOLE:
+                return "Whole (W)";
+            default:
+                return "idk";
+        }
+    }
+
+    public string FlavorTypeToString(FlavorShot fs)
+    {
+        switch (fs)
+        {
+            case FlavorShot.Flavor_MOCHA:
+                return "Mocha (M)";
+            case FlavorShot.Flavor_PUMPKIN_SPICE:
+                return "Pumpkin Spice (Ps)";
+            case FlavorShot.Flavor_VANILLA:
+                return "Vanilla (V)";
+            default:
+                return "idk";
+        }
+    }
+
     public string ToppingTypeToString(ToppingType tt)
     {
         string s = "";
@@ -374,5 +532,86 @@ public class GameManager : MonoBehaviour
         }
 
         return s;
+    }
+
+    public void EnableAndDisableUnlockedItems()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (unlockedBeans[(BeanType)i])
+            {
+                if (beanObjects[i] != null)
+                {
+                    beanObjects[i].SetActive(true);
+                }
+            }
+            else
+            {
+                if (beanObjects[i] != null)
+                {
+                    beanObjects[i].SetActive(false);
+                }
+            }
+        }
+
+        for (int i = 1; i < 4; i++)
+        {
+            if (unlockedMilk[(MilkType)i])
+            {
+                if (milkObjects[i] != null)
+                {
+                    milkObjects[i].SetActive(true);
+                }
+            }
+            else
+            {
+                if (milkObjects[i] != null)
+                {
+                    milkObjects[i].SetActive(false);
+                }
+            }
+        }
+
+        for (int i = 1; i < 4; i++)
+        {
+            if (unlockedFlavors[(FlavorShot)i])
+            {
+                if (flavorObjects[i] != null)
+                {
+                    flavorObjects[i].SetActive(true);
+                }
+            }
+            else
+            {
+                if (flavorObjects[i] != null)
+                {
+                    flavorObjects[i].SetActive(false);
+                }
+            }
+        }
+
+        for (int i = 1; i < 5; i++)
+        {
+            if (unlockedToppings[(ToppingType)i])
+            {
+                if (toppingObjects[i] != null)
+                {
+                    toppingObjects[i].SetActive(true);
+                }
+            }
+            else
+            {
+                if (toppingObjects[i] != null)
+                {
+                    toppingObjects[i].SetActive(false);
+                }
+            }
+        }
+    }
+
+    public void StartLevel()
+    {
+        moneyEarned = 0.0f;
+        EnableAndDisableUnlockedItems();
     }
 }
